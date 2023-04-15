@@ -47,3 +47,8 @@ h2 {
   border-bottom: 2px solid #f4f4f4;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
