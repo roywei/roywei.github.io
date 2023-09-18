@@ -52,3 +52,23 @@ h2 {
   margin: 0 auto;
   padding: 0 20px;
 }
+
+.social-media-icons a {
+  margin-right: 10px; /* Adds some spacing between the icons */
+}
+
+.social-media-icons .fa-linkedin {
+  color: #0e76a8; /* LinkedIn Blue */
+}
+
+.social-media-icons .fa-github {
+  color: #333; /* GitHub Black */
+}
+
+.social-media-icons .fa-medium {
+  color: #333; /* Medium */
+}
+
+.social-media-icons .fa-twitter {
+  color: #1da1f2; /* Twitter Blue */
+}
