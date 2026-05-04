@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading… — Lai Wei</title>
+  <link rel="icon" href="https://github.com/roywei.png">
+  <script>
+    // Apply saved theme before paint to avoid FOUC.
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="js/posts.js"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4NJ1VM9CQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4NJ1VM9CQ');
+  </script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-brand">Lai Wei</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/#projects">Projects</a>
+          <a href="/#writing">Writing</a>
+          <a href="blog.html">Blog</a>
+          <a href="assets/Lai_Wei_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+        </div>
+        <div class="theme-toggle"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <article class="post">
+      <header class="post-header">
+        <h1 id="post-title">Loading…</h1>
+        <p class="post-meta" id="post-meta"></p>
+      </header>
+      <div class="post-content" id="post-content"></div>
+      <div class="post-back">
+        <a href="blog.html" class="subtle-link">← Back to blog</a>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>© 2026 Lai Wei</span>
+      <span>iaml.ai</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const slug = new URLSearchParams(location.search).get('slug');
+      const post = (window.POSTS || []).find(p => p.slug === slug);
+      const titleEl = document.getElementById('post-title');
+      const metaEl = document.getElementById('post-meta');
+      const contentEl = document.getElementById('post-content');
+
+      if (!slug || !post) {
+        document.title = 'Post not found — Lai Wei';
+        titleEl.textContent = 'Post not found';
+        metaEl.textContent = '';
+        contentEl.innerHTML = '<p>The post you were looking for doesn\'t exist. <a href="blog.html">Back to blog →</a></p>';
+        return;
+      }
+
+      document.title = `${post.title} — Lai Wei`;
+      titleEl.textContent = post.title;
+      metaEl.textContent = post.date;
+
+      fetch(`blog/${slug}.md`)
+        .then(r => {
+          if (!r.ok) throw new Error('not found');
+          return r.text();
+        })
+        .then(md => {
+          // Strip a leading H1 if it duplicates the title.
+          const stripped = md.replace(/^#\s+.+\r?\n+/, '');
+          contentEl.innerHTML = marked.parse(stripped);
+        })
+        .catch(() => {
+          contentEl.innerHTML = '<p>Couldn\'t load this post. <a href="blog.html">Back to blog →</a></p>';
+        });
+    })();
+  </script>
+  <script src="js/theme.js"></script>
+</body>
+</html>

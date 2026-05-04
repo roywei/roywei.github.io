@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Lai Wei</title>
+  <meta name="description" content="Notes on AI, distributed systems, and whatever else I'm working on.">
+  <link rel="icon" href="https://github.com/roywei.png">
+  <script>
+    // Apply saved theme before paint to avoid FOUC.
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/posts.js"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4NJ1VM9CQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4NJ1VM9CQ');
+  </script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-brand">Lai Wei</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/#projects">Projects</a>
+          <a href="/#writing">Writing</a>
+          <a href="blog.html">Blog</a>
+          <a href="assets/Lai_Wei_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+        </div>
+        <div class="theme-toggle"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="hero" style="padding-bottom: 16px;">
+      <div class="hero-text">
+        <h1>Blog</h1>
+        <p class="role">Notes on AI, systems, and what I've been building.</p>
+      </div>
+    </section>
+
+    <section style="padding-top: 8px;">
+      <ul class="post-list" id="post-list">
+        <li><span class="meta">…</span><span class="post-link">Loading…</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>© 2026 Lai Wei</span>
+      <span>iaml.ai</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const list = document.getElementById('post-list');
+      const posts = (window.POSTS || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+
+      if (posts.length === 0) {
+        list.innerHTML = '<li><span class="meta">soon</span><span class="post-link">No posts yet — check back later.</span></li>';
+        return;
+      }
+
+      list.innerHTML = posts.map(p => {
+        const ym = p.date.slice(0, 7).replace('-', '·');
+        return `
+          <li>
+            <span class="meta">${ym}</span>
+            <span class="post-link"><a href="post.html?slug=${encodeURIComponent(p.slug)}">${p.title}</a></span>
+          </li>
+        `;
+      }).join('');
+    })();
+  </script>
+  <script src="js/theme.js"></script>
+</body>
+</html>
