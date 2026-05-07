@@ -1,0 +1,166 @@
+%-------------------------
+% Resume in LaTeX
+% Author : Lai Wei
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+% Only available under pdftex; skip under xetex/luatex (e.g. tectonic).
+\ifdefined\pdfgentounicode
+  \input{glyphtounicode}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\evensidemargin}{-0.55in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generated PDF is machine readable/ATS parsable (pdftex only).
+\ifdefined\pdfgentounicode
+  \pdfgentounicode=1
+\fi
+
+%-------------------------
+% Custom commands
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{#2} \\
+      \textit{\small#3} & \textit{\small#4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small#2} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+% Company-only heading (one line) — for companies whose sub-roles each get their own dated sub-heading.
+\newcommand{\resumeCompanyHeading}[2]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{#2}
+    \end{tabular*}\vspace{-5pt}
+}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,topsep=4pt,itemsep=4pt,parsep=0pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[topsep=2pt,itemsep=1pt,parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-3pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{\href{https://iaml.ai/}{\Large Lai Wei}} & Email: \href{mailto:royweilai@gmail.com}{royweilai@gmail.com}\\
+  \href{https://iaml.ai/}{iaml.ai} \quad \href{https://www.linkedin.com/in/lai-wei-roy/}{linkedin.com/in/lai-wei-roy} \quad \href{https://github.com/roywei}{github.com/roywei} & Mobile: \href{tel:+14129539889}{412-953-9889}
+\end{tabular*}
+
+%-----------EDUCATION-----------------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Carnegie Mellon University}{Pittsburgh, PA}
+      {Master of Science: Electrical and Computer Engineering}{2015-Jan -- 2016-May}
+    \resumeSubheading
+      {Nanyang Technological University}{Singapore}
+      {Bachelor of Engineering: Electrical and Electronic Engineering}{2010-Aug -- 2014-May}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------------
+\section{Work History}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Meta Superintelligence Lab}{2024-Dec -- Present}
+      {Engineering Manager, Inference Engine}{}
+      \resumeItemListStart
+        \item Scaled inference engine team from 9 to 16 engineers; led model enablement and inference optimizations. Mentored 2 team members into \textbf{vLLM committers} within 6 months.
+        \item Led inference for the \textbf{Meta Muse Spark} launch, delivering offline inference, RL rollout, and production serving optimizations cross-functionally with research and product partners.
+        \item Drove inference optimizations spanning speculative decoding, CPU KV-cache offload, \textbf{batch-invariant inference} (bit-level parity with the RL trainer and sampler), MoE load balancing, and parallelism strategies. Pushed SOTA Blackwell perf on vLLM (\href{https://vllm.ai/blog/dsr1-gb200-part1}{DSR1 on GB200}) and shipped \href{https://vllm-project.github.io/2025/04/05/llama4.html}{Llama 4 day-zero on vLLM}.
+        \item Drove company-wide adoption of \textbf{vLLM} as the unified inference engine for open-source models across NVIDIA, AMD, TPU, and MTIA on multiple cloud capacities --- \textbf{$>$80\% of inference workload migrated}; advanced the move toward Docker, OSS, and cloud-native infrastructure.
+        \item Built internal inference agents (``Claw'') that automate debugging, deployment, and issue triage for internal customers; built capacity-estimation and perf-sweep tooling for model launches.
+        \item Co-led ecosystem partnerships with NVIDIA, AMD, AWS, PyTorch, and the vLLM community; secured AWS partnership credits for the \textbf{vLLM router} launch.
+      \resumeItemListEnd
+
+    \resumeCompanyHeading
+      {Amazon Web Services (AWS) SageMaker}{2018-Jan -- 2024-Nov}
+      \resumeSubSubheading{Software Development Manager}{2023-Dec -- 2024-Nov}
+      \resumeItemListStart
+        \item Led a team of 7 to optimize PyTorch for next-generation compute instances, including H200, L40S GPUs, AWS Graviton CPUs, and upcoming GH/B200 instances.
+        \item Collaborated cross-company with Meta, Nvidia, EC2, Annapurna Labs, and SageMaker on PyTorch performance at large-cluster scale; launched Meta's SAM v2 model on SageMaker infra.
+        \item Directed development of AWS Deep Learning Containers, integrating SageMaker DataParallel/Model Parallel libraries; pioneered AI-agent security patching automation, saving an estimated 50 SDE-weeks per year.
+      \resumeItemListEnd
+
+      \resumeSubSubheading{Senior Software Development Engineer / Tech Lead Manager}{2022-Oct -- 2023-Nov}
+      \resumeItemListStart
+        \item Established a specialized team to ship \textbf{AWS-optimized PyTorch} with out-of-the-box support for AWS EFA and enhanced NCCL; raised network utilization from 70\% to 90\% on A100 clusters --- adopted by AWS's largest LLM training customers.
+        \item Redesigned the SageMaker Distributed Data Parallel Library to integrate with PyTorch as a custom distributed backend; achieved a \textbf{40\% training-time reduction} for GPT NeoX, DALL-E, and guided diffusion models.
+      \resumeItemListEnd
+
+      \resumeSubSubheading{Software Development Engineer}{2018-Jan -- 2022-Sep}
+      \resumeItemListStart
+        \item Spearheaded loss-function optimization for the \textbf{AWS MLPerf 2020} benchmark, enabling convergence at extremely large batch sizes --- trained MaskRCNN on 512 GPUs in $<$7 minutes and T5-3B on 2048 GPUs in 4.68 days.
+        \item Built \textbf{Deep Java Library (DJL)} for framework-agnostic Java inference (TensorFlow / TF-Lite engines); Apache MXNet committer and primary maintainer of Keras-MXNet.
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Cheetah Mobile America AI Lab}{2016-Jun -- 2017-Oct}
+      {Software Engineer}{}
+      \resumeItemListStart
+        \item Designed the User2Vec feature pipeline that improved Ad Click-Through Rate (CTR) prediction accuracy.
+        \item Constructed data pipelines generating 5M user profiles powering personalized news recommendation.
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PUBLICATION & PATENTS-----------------
+\section{Publications \& Patents}
+  \resumeSubHeadingListStart
+    \item \textbf{US Patent 11763154} --- Machine Learning Service with Pre-Trained Models
+    \item \textbf{US Patent 11769035} --- Automatically Determining Configurations for Executing Recurrent Neural Networks
+    \item \textbf{Transfer Learning for Personalized Content and Ad Recommendation}, Industry Talk on RecSys 2017
+    \item \textbf{Machine learning approach for shaft crack detection through acoustical emission signals}, 2015 IEEE 20th Conference on Emerging Technologies \& Factory Automation (ETFA)
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
