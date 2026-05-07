@@ -148,25 +148,30 @@ The IR is half-built across several efforts that haven't yet realized they're th
 
 ## Pain points and future directions
 
-Beyond the IR thesis above, the state of the art has gaps. Some are addressable; some are research questions.
+Beyond the IR thesis, four open gaps stand out:
 
-**Transcript portability.** There is no shared format for "an agent conversation." Every harness invents one. Anthropic Messages and OpenAI Responses are the closest things, but they're not symmetric and they're tied to commercial APIs. A neutral, provider-agnostic transcript format — the JSON schema for "conversation with tool calls and reasoning" — would let harnesses move between providers without rewriting. The fact that this doesn't exist is a coordination failure.
-
-**Server-tool standardization.** MCP solves the *client-side* tool protocol. It does not solve the server-side hosted-tool protocol. When an Anthropic web search differs from an OpenAI web search differs from a self-hosted retrieval tool, harnesses end up with provider-specific code paths for each. A neutral hosted-tool descriptor — "this tool runs on the provider, here's its event lifecycle, here's how to reference its results" — would help.
-
-**Reasoning-trace privacy.** Reasoning is increasingly the most sensitive part of an agent transcript — it's where the model speculates about user intent, considers approaches it doesn't end up taking, and exposes its internal model. The Claude Code source carries reasoning traces through *five* distinct paths (analytics, customer OTel, beta tracing, local JSONL, API context, bug reports), each with its own enable/disable. The current pattern of "thinking is just another content block" doesn't reflect its sensitivity. A reasoning-specific privacy contract — "this content does not get transported beyond the immediate request" — would be valuable.
-
-**Inference-engine API for agents.** A self-hostable, provider-shaped API that vLLM and SGLang could expose, that Claude Code and Codex and Aider could target, that lets the agent-shaped affordances (block streaming, server tools, prompt caching, optional state) work without a commercial API behind them. The closest active effort is the Open Responses API. If it stabilizes — and if vLLM, SGLang, and the major harnesses all converge on it — most of this gap closes. The risk is the usual one: a standard born from one provider's design ends up underspecified for cases the original didn't motivate.
+- **Transcript portability.** No neutral format for "an agent conversation." Messages and Responses come closest but are asymmetric and provider-locked. A shared schema would let harnesses move between providers without rewriting.
+- **Server-tool standardization.** MCP handles the client-side tool protocol; nothing handles the server-side one. Anthropic's web search, OpenAI's web search, and self-hosted retrieval each demand their own code path.
+- **Reasoning-trace privacy.** Reasoning is the most sensitive part of an agent transcript and flows through five distinct paths in Claude Code alone. Treating it as "just another content block" doesn't reflect that.
+- **Inference-engine API for agents.** A self-hostable, provider-shaped API that vLLM and SGLang could expose and Claude Code and Codex could target. The Open Responses API is the closest active effort.
 
 ## The reliability argument
 
-When you ask "how do I make my agent more reliable?", the answer is rarely "use a smarter model." It's almost always "fix the layer that's silently corrupting state."
+When you ask "how do I make my agent more reliable?", the answer is rarely "use a smarter model." It's almost always "fix the layer that's silently corrupting state." The SDK bugs from the [previous post](post.html?slug=agent-api-design) each look minor in isolation; together they're the difference between an agent that works and one that fails one in fifty turns with a symptom you can't reproduce.
 
-The SDK bugs from the [previous post](post.html?slug=agent-api-design) — duplicate-text, O(n²) parsing, mutable references — each look minor in isolation. In aggregate they make the difference between an agent that works and an agent that fails one in fifty turns with a phantom symptom you can't reproduce. The harness fixes them by owning the reducer. But the underlying problem is the bigger one this post has been about: the API and the SDK and the model template and the engine parser were each designed to satisfy a slightly different contract, and the harness is left reconciling them.
+The way forward is codesign. The model emits specific tags. The engine parses them into events. The API surfaces them with explicit lifecycle. The SDK doesn't hide it. The harness owns the reducer. Each layer honest about what it does — the cost of being wrong local, not spread.
 
-The way forward is codesign. The model is trained to emit specific tags in a specific order. The inference engine parses those tags into structured events. The API surfaces those events with explicit lifecycle. The SDK exposes the events without hiding the lifecycle. The harness reduces the events into its own state. Each layer is honest about what it's doing, and the cost of being wrong is local rather than spread across all layers.
+If we're lucky, an IR catches up and the contracts become machine-checkable. If we're not, we keep writing N × M parsers and watching them silently drop tool calls.
 
-If we're lucky, an IR catches up to make the contracts machine-checkable. If we're not, we keep writing N × M parsers and watching them silently drop tool calls. The interesting design work in 2026 — for inference engines, for API designers, for SDK authors, for harness builders — is which of those two futures we choose.
+## A counter-thesis
+
+There's a version of this story where none of it matters.
+
+If the next generation of models gets capable enough — capable enough to read any chat template at inference, infer its conventions, and emit clean output in whatever format the caller asks for — most of the codesign machinery goes away. The IR becomes a research curiosity. Tool-call parsers stop mattering because the model doesn't drop closing braces. Constrained decoding becomes a courtesy, not a correctness mechanism. Templates become a quaint thing we used to coordinate around because we couldn't trust the model to.
+
+That future isn't crazy. The trajectory of model capability has been to swallow engineering problems into the weights. JSON mode used to need constrained sampling; most frontier models now hit it natively. Long-context retrieval used to need a vector database; now models read whole repos. It's plausible that "respect this output format reliably across millions of inferences" is the next problem to get absorbed.
+
+But betting on it today is itself a design choice. Current models still drop tool calls, and the harness still pays for the gap. Codesign is the argument that pays the bills until the model can carry the weight on its own — even if its half-life is shorter than I'd like.
 
 ---
 
