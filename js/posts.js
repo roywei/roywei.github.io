@@ -5,8 +5,13 @@
 // Posts are sorted by date (newest first) automatically.
 window.POSTS = [
   {
-    slug: 'hello-world',
-    title: 'Hello, world',
-    date: '2026-05-03',
+    slug: 'agent-ir-codesign',
+    title: 'Is This an IR Problem? Codesigning LLM APIs, Inference Engines, and Agent Harnesses',
+    date: '2026-05-06',
+  },
+  {
+    slug: 'agent-api-design',
+    title: "Why Your Agent Can't Use Its SDK: LLM API Design Through the Harness Lens",
+    date: '2026-05-06',
   },
 ];
